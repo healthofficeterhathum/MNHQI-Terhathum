@@ -48,6 +48,22 @@ const DISTRICTS = {
   morang: "Morang", sunsari: "Sunsari", bhojpur: "Bhojpur",
 };
 
+// Map a hand-typed palika to its official name (list in config.js).
+// Compares only the main word, ignoring case, spaces, ward numbers and
+// words like "Rural Municipality" / "RM", so "Chhathar RM" = "Chhathar Rural Municipality".
+function officialPalika(raw) {
+  const text = String(raw || "").trim().replace(/\s+/g, " ");
+  if (!text || typeof PALIKA_NAMES === "undefined") return text;
+  const core = (s) => String(s).toLowerCase()
+    .replace(/rura?r?l|municipality|municipal|gaunpalika|gaupalika|nagarpalika|\brm\b|\bm\b|\d+/g, "")
+    .replace(/[^a-z]/g, "");
+  const key = core(text);
+  for (const p of PALIKA_NAMES) {
+    if (p.spellings.some((sp) => core(sp) === key)) return p.name;
+  }
+  return text;
+}
+
 // Short labels for every question (used in the gap-analysis view).
 const QLABELS = {
   q1:"Maternal services always available", q2:"Beds in first-stage labour room", q3:"Postnatal beds available",
@@ -164,7 +180,7 @@ function computeRow(r) {
     district: norm(r.district) === "other"
       ? (r.district_other || "").trim() || "Other"
       : DISTRICTS[norm(r.district)] || (r.district || "").trim(),
-    palika: (r.palika || "").trim(),
+    palika: officialPalika(r.palika),
     facility_type: r.facility_type || "",
     facility_type_label: FACILITY_TYPES[r.facility_type] || r.facility_type || "—",
     assessment_no: r.assessment_no || "",

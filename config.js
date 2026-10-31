@@ -26,3 +26,16 @@ const SHEET_CSV_URL =
 // One Kobo project feeds every district; this site shows Terhathum only.
 // Older free-text submissions used different spellings, so all three are listed.
 const DISTRICT_SCOPE = { include: ["terhathum", "terathum", "tehrathum"] };
+
+// Official palika names for Terhathum. Kobo entries were typed by hand, so the same
+// palika arrived with different spellings. The dashboard shows every entry under the
+// official name below. The data in Kobo / Google Sheet is NOT changed.
+// To handle a new misspelling: add it (any case, spaces don't matter) to "spellings".
+const PALIKA_NAMES = [
+  { name: "Myanglung Municipality",          spellings: ["myanglung", "myaglung", "myanglung municipality", "myaglung 1"] },
+  { name: "Laligurans Municipality",         spellings: ["laligurans", "laligurans municipality"] },
+  { name: "Aathrai Rural Municipality",      spellings: ["aathrai", "aatharai", "athrai"] },
+  { name: "Chhathar Rural Municipality",     spellings: ["chhathar", "chathar"] },
+  { name: "Phedap Rural Municipality",       spellings: ["phedap", "fedap"] },
+  { name: "Menchhayayem Rural Municipality", spellings: ["menchhayayem", "menchayayem"] },
+];
